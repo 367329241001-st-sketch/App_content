@@ -1,103 +1,34 @@
 import React from 'react';
+import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { globalStyles } from '../styles/styles';
 
-import {
-  View,
-  Text
-} from 'react-native';
-
-import {
-  Ionicons
-} from '@expo/vector-icons';
-
-
-// ========================================
-// STYLE
-// ========================================
-
-import styles, {
-  COLORS } from '../styles/ProjectStyles';
-
-
-export default function HomeScreen() {
+export default function HomeScreen({ navigation }) {
+  const contentList = [
+    { id: 1, title: 'บทเรียนที่ 1: React Native Basics', desc: 'เรียนรู้พื้นฐาน Component และ State', icon: 'book-outline' },
+    { id: 2, title: 'บทเรียนที่ 2: React Navigation', desc: 'การใช้งาน Tab และ Stack Navigation', icon: 'compass-outline' },
+    { id: 3, title: 'บทเรียนที่ 3: Style & UI Design', desc: 'การจัดการ Stylesheet และการออกแบบ UI', icon: 'color-palette-outline' },
+  ];
 
   return (
+    <ScrollView style={globalStyles.container}>
+      <Text style={globalStyles.title}>📌 บทเรียนทั้งหมด</Text>
+      <Text style={globalStyles.subtitle}>เลือกบทเรียนเพื่อดูรายละเอียด</Text>
 
-    <View
-      style={[
-        styles.screen,
-        styles.centerContent
-      ]}
-    >
-
-
-      <Ionicons
-
-        name="phone-portrait-outline"
-
-        size={90}
-
-        color={COLORS.primary}
-
-      />
-
-
-      <Text style={styles.title}>
-
-        React Navigation
-
-      </Text>
-
-
-      <Text style={styles.subtitle}>
-
-        ตัวอย่างการใช้งาน
-
-      </Text>
-
-
-      <Text style={styles.highlight}>
-
-        Tab + Stack Navigation
-
-      </Text>
-
-
-      <View style={styles.card}>
-
-
-        <Text style={styles.cardTitle}>
-
-          Concept
-
-        </Text>
-
-
-        <Text style={styles.cardText}>
-
-          1. Bottom Tab เป็นเมนูหลัก
-
-        </Text>
-
-
-        <Text style={styles.cardText}>
-
-          2. Navigation Tab มี Stack ซ้อนอยู่
-
-        </Text>
-
-
-        <Text style={styles.cardText}>
-
-          3. Stack เปิดหน้า List → Detail
-
-        </Text>
-
-
-      </View>
-
-
-    </View>
-
+      {contentList.map((item) => (
+        <TouchableOpacity
+          key={item.id}
+          style={globalStyles.card}
+          onPress={() => navigation.navigate('DetailScreen', { item })}
+        >
+          <Ionicons name={item.icon} size={28} color="#3498db" />
+          <View style={globalStyles.cardTextContainer}>
+            <Text style={globalStyles.cardTitle}>{item.title}</Text>
+            <Text style={globalStyles.cardDescription}>{item.desc}</Text>
+          </View>
+          <Ionicons name="chevron-forward" size={20} color="#bdc3c7" />
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
   );
-
 }

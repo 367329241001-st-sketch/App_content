@@ -1,186 +1,58 @@
 import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { Ionicons } from '@expo/vector-icons';
 
-import {   NavigationContainer  } from '@react-navigation/native';
-
-import {  createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-
-import {   Ionicons} from '@expo/vector-icons';
-
-
-// ========================================
-// SCREEN
-// ========================================
-
-import HomeScreen   from './screens/HomeScreen';
-
-import NavigationStack   from './navigation/NavigationStack';
-
-import AboutScreen   from './screens/AboutScreen';
-
-
-// ========================================
-// STYLE
-// ========================================
-
-import styles, {   COLORS } from './styles/ProjectStyles';
-
-
-// ========================================
-// CREATE TAB
-// ========================================
+import HomeScreen from './screens/HomeScreen';
+import DetailScreen from './screens/DetailScreen';
+import MediaScreen from './screens/MediaScreen';
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
-
-// ========================================
-// APP
-// ========================================
+function HomeStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen 
+        name="HomeScreen" 
+        component={HomeScreen} 
+        options={{ title: 'หน้าแรก' }} 
+      />
+      <Stack.Screen 
+        name="DetailScreen" 
+        component={DetailScreen} 
+        options={{ title: 'รายละเอียดบทเรียน' }} 
+      />
+    </Stack.Navigator>
+  );
+}
 
 export default function App() {
-
   return (
-
     <NavigationContainer>
-
       <Tab.Navigator
-
-        initialRouteName="Home"
-
         screenOptions={({ route }) => ({
-
-          headerTitleAlign: 'center',
-
-          tabBarActiveTintColor:
-            COLORS.primary,
-
-          tabBarInactiveTintColor:
-            COLORS.textSecondary,
-
-          tabBarStyle:
-            styles.tabBar,
-
-
-          // =================================
-          // ICON
-          // =================================
-
-          tabBarIcon: ({
-            focused,
-            color,
-            size
-          }) => {
-
-            let iconName;
-
-
-            if (route.name === 'Home') {
-
-              iconName = focused
-                ? 'home'
-                : 'home-outline';
-
-            }
-
-
-            else if (
-              route.name === 'Navigation'
-            ) {
-
-              iconName = focused
-                ? 'navigate'
-                : 'navigate-outline';
-
-            }
-
-
-            else if (
-              route.name === 'About'
-            ) {
-
-              iconName = focused
-                ? 'information-circle'
-                : 'information-circle-outline';
-
-            }
-
-
-            return (
-
-              <Ionicons
-
-                name={iconName}
-
-                size={size}
-
-                color={color}
-
-              />
-
-            );
-
+          tabBarIcon: ({ color, size }) => {
+            let iconName = route.name === 'HomeTab' ? 'home' : 'play-circle';
+            return <Ionicons name={iconName} size={size} color={color} />;
           },
-
+          tabBarActiveTintColor: '#3498db',
+          tabBarInactiveTintColor: 'gray',
+          headerShown: false,
         })}
-
       >
-
-
-        <Tab.Screen
-
-          name="Home"
-
-          component={HomeScreen}
-
-          options={{
-
-            title: 'หน้าหลัก',
-
-            tabBarLabel: 'Home',
-
-          }}
-
+        <Tab.Screen 
+          name="HomeTab" 
+          component={HomeStack} 
+          options={{ title: 'บทเรียน' }} 
         />
-
-
-        <Tab.Screen
-
-          name="Navigation"
-
-          component={NavigationStack}
-
-          options={{
-
-            headerShown: false,
-
-            tabBarLabel: 'Navigation',
-
-          }}
-
+        <Tab.Screen 
+          name="MediaTab" 
+          component={MediaScreen} 
+          options={{ title: 'สื่อมัลติมีเดีย', headerShown: true }} 
         />
-
-
-        <Tab.Screen
-
-          name="About"
-
-          component={AboutScreen}
-
-          options={{
-
-            title: 'เกี่ยวกับ',
-
-            tabBarLabel: 'About',
-
-          }}
-
-        />
-
-
       </Tab.Navigator>
-
-
     </NavigationContainer>
-
   );
-
 }
